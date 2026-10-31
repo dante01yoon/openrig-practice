@@ -1,0 +1,12 @@
+{
+  "name": "openrig-practice",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "서울 문화행사 찾기 — OpenRig 역할별 모델 팀 실습 앱",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test"
+  }
+}

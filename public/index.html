@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>서울 문화행사 찾기</title>
+</head>
+<body>
+  <h1>서울 문화행사 찾기</h1>
+  <p id="count"></p>
+  <ul id="list"></ul>
+  <script type="module">
+    const rows = await (await fetch('/api/events')).json();
+    document.querySelector('#count').textContent = `행사 ${rows.length}개`;
+    document.querySelector('#list').innerHTML = rows.map((r) => `<li>${r.TITLE}</li>`).join('');
+  </script>
+</body>
+</html>
