@@ -36,14 +36,23 @@
       return node;
     };
 
-    function thumb(row) {
-      const fallback = () => el('div', 'thumb placeholder', row.CODENAME || '');
-      if (!row.MAIN_IMG) return fallback();
+    // 사진을 못 불러올 때 보여 줄 그림(public/fallback) 중 하나를 무작위로
+    const FALLBACKS = ['concert', 'gallery', 'workshop', 'festival', 'theater', 'gugak', 'film', 'classical'];
+    function fallbackImg() {
       const img = el('img', 'thumb');
-      img.loading = 'lazy';
+      img.alt = '';
+      img.src = `fallback/${FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]}.jpg`;
+      return img;
+    }
+
+    function thumb(row) {
+      if (!row.MAIN_IMG) return fallbackImg();
+      const img = el('img', 'thumb');
       img.alt = '';
       img.src = row.MAIN_IMG;
-      img.addEventListener('error', () => img.replaceWith(fallback()), { once: true });
+      const swap = () => { if (!img.naturalWidth && img.isConnected) img.replaceWith(fallbackImg()); };
+      img.addEventListener('error', swap, { once: true });
+      setTimeout(swap, 4000); // 사진 서버가 응답하지 않으면 error가 한참 뒤에 온다
       return img;
     }
 
