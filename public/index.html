@@ -36,21 +36,25 @@
       return node;
     };
 
-    // 사진을 못 불러올 때 보여 줄 그림(public/fallback) 중 하나를 무작위로
+    // 사진을 못 불러올 때 보여 줄 그림(public/fallback) 중 하나를 무작위로. 행사마다 한 번 고르면 다시 그려도 같은 그림
     const FALLBACKS = ['concert', 'gallery', 'workshop', 'festival', 'theater', 'gugak', 'film', 'classical'];
-    function fallbackImg() {
+    const picked = new Map();
+    let photosDown = false; // shortcut: 사진 하나라도 실패하면 이후 전부 대체 그림, 사진 서버가 섞여 있으면 행사별로 기억할 것
+    function fallbackImg(row) {
+      const key = row.TITLE + row.STRTDATE;
+      if (!picked.has(key)) picked.set(key, FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]);
       const img = el('img', 'thumb');
       img.alt = '';
-      img.src = `fallback/${FALLBACKS[Math.floor(Math.random() * FALLBACKS.length)]}.jpg`;
+      img.src = `fallback/${picked.get(key)}.jpg`;
       return img;
     }
 
     function thumb(row) {
-      if (!row.MAIN_IMG) return fallbackImg();
+      if (!row.MAIN_IMG || photosDown) return fallbackImg(row);
       const img = el('img', 'thumb');
       img.alt = '';
       img.src = row.MAIN_IMG;
-      const swap = () => { if (!img.naturalWidth && img.isConnected) img.replaceWith(fallbackImg()); };
+      const swap = () => { if (img.naturalWidth) return; photosDown = true; if (img.isConnected) img.replaceWith(fallbackImg(row)); };
       img.addEventListener('error', swap, { once: true });
       setTimeout(swap, 4000); // 사진 서버가 응답하지 않으면 error가 한참 뒤에 온다
       return img;
