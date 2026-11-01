@@ -1,0 +1,54 @@
+version: "0.2"
+name: culture
+summary: 서울 문화행사 앱의 기획·조사·구현·코드 리뷰 팀
+culture_file: culture/CULTURE.md
+startup:
+  files:
+    - path: startup/context.md
+      delivery_hint: send_text
+      required: true
+pods:
+  - id: team
+    label: Culture product team
+    members:
+      - id: lead
+        agent_ref: local:agents/lead
+        profile: default
+        permission_policy: builtin:yolo
+        runtime: claude-code
+        model: opus
+        cwd: ../..
+      - id: research
+        agent_ref: local:agents/research
+        profile: default
+        permission_policy: builtin:yolo
+        runtime: claude-code
+        model: haiku
+        cwd: ../..
+      - id: build
+        agent_ref: local:agents/build
+        profile: default
+        permission_policy: builtin:yolo
+        runtime: claude-code
+        model: sonnet
+        cwd: ../..
+      - id: review
+        agent_ref: local:agents/review
+        profile: default
+        permission_policy: builtin:yolo
+        runtime: codex
+        cwd: ../..
+    edges:
+      - kind: delegates_to
+        from: lead
+        to: research
+      - kind: delegates_to
+        from: lead
+        to: build
+      - kind: delegates_to
+        from: lead
+        to: review
+      - kind: can_observe
+        from: review
+        to: build
+edges: []
