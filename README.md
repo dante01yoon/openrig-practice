@@ -68,7 +68,7 @@ git checkout p01-start
 최신 행사로 바꾸고 싶으면 서울 열린데이터광장 Open API 인증키를 받으세요.
 
 1. [data.seoul.go.kr](https://data.seoul.go.kr) 회원가입 → 로그인
-2. 「인증키 신청」에서 **일반 인증키**를 신청(사용 목적·활용 내용 입력) → 마이페이지에서 키 확인
+2. 마이페이지 「인증키 신청」에서 **일반 인증키**를 신청 → 「인증키 관리」에서 받은 키 확인
 3. 키가 맞는지 먼저 확인합니다. 아래 주소의 `sample` 자리에 받은 키를 넣으면 됩니다(`sample`은 5건까지만 됩니다).
    ```bash
    curl "http://openapi.seoul.go.kr:8088/sample/json/culturalEventInfo/1/2/"
