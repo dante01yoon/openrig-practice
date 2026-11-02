@@ -61,7 +61,26 @@ git checkout p01-start
 
 다시 `rig ps --nodes --rig kernel`에서 operator-agent의 ATTN이 no면 프롬프트를 그대로 보내면 됩니다.
 
-## 데이터
+## 데이터와 인증키
+
+**실습에는 인증키가 필요 없습니다.** 저장소의 `data/events.json`(2026-10-31에 받은 사본)을 그대로 씁니다.
+
+최신 행사로 바꾸고 싶으면 서울 열린데이터광장 Open API 인증키를 받으세요.
+
+1. [data.seoul.go.kr](https://data.seoul.go.kr) 회원가입 → 로그인
+2. 「인증키 신청」에서 **일반 인증키**를 신청(사용 목적·활용 내용 입력) → 마이페이지에서 키 확인
+3. 키가 맞는지 먼저 확인합니다. 아래 주소의 `sample` 자리에 받은 키를 넣으면 됩니다(`sample`은 5건까지만 됩니다).
+   ```bash
+   curl "http://openapi.seoul.go.kr:8088/sample/json/culturalEventInfo/1/2/"
+   ```
+4. 받은 키로 데이터를 새로 받습니다(한 번에 1,000건씩 나눠 받고, 오늘 이후에 끝나는 행사만 남김).
+   ```bash
+   SEOUL_API_KEY=발급받은키 node scripts/fetch-events.mjs
+   ```
+
+호출 형식은 공식 안내([Open API 소개](https://data.seoul.go.kr/together/guide/useGuide.do))를 따릅니다: `http://openapi.seoul.go.kr:8088/(인증키)/json/culturalEventInfo/(시작)/(끝)/`. 키는 코드나 커밋에 넣지 마세요.
+
+## 데이터 출처
 
 `data/events.json`은 [서울 열린데이터광장 「서울시 문화행사 정보」](https://data.seoul.go.kr/dataList/OA-15486/S/1/datasetView.do)에서 2026-10-31에 받은 사본(11월 이후 끝나는 행사 293건)입니다. 공공누리 제1유형(출처 표시)으로 이용합니다. 출처: 서울특별시 서울문화포털.
 
