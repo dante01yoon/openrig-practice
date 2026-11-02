@@ -10,6 +10,8 @@
 rig send operator-agent@kernel "$PWD 저장소에 쓸 새 팀 culture를 만들어 줘. 자리는 넷: lead는 Claude Code에 opus 모델(기획·화면 디자인·일 나누기), research는 Claude Code에 haiku 모델(자료 조사), build는 Claude Code에 sonnet 모델(구현), review는 Codex(코드 리뷰). 모든 자리는 권한을 묻지 않게 permission_policy를 builtin:yolo로 해 줘. 팀 파일만 만들고 rig up은 하지 마."
 ```
 
+> 오류가 나면(`not found`, `Cannot connect`) README의 「막힐 때」 순서를 따라 하세요.
+
 > builtin:yolo는 에이전트가 허락 없이 무엇이든 실행하게 합니다. 실습처럼 따로 떼어 놓은 폴더와 계정에서만 쓰세요.
 
 ## Haiku에게 조사 맡기기 — 리드에게 앱 전체 맡기기

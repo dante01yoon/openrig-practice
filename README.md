@@ -31,6 +31,36 @@ git checkout p01-start
 
 긴 프롬프트 원문은 [PROMPTS.md](PROMPTS.md)에 있습니다. 여러분의 프로젝트로 따라 해도 OpenRig 사용법은 똑같습니다.
 
+## 막힐 때: `rig send operator-agent@kernel`이 오류를 낼 때
+
+영상은 Claude Code와 Codex에 이미 로그인된 컴퓨터로 찍었습니다. 처음 쓰는 컴퓨터에서는 아래 순서로 확인하세요.
+
+1. **데몬이 켜져 있나** — `Cannot connect to the OpenRig daemon`이 나오면 데몬이 꺼진 상태입니다.
+   ```bash
+   rig daemon status
+   rig daemon start
+   ```
+   데몬이 켜지면 관리 팀 `kernel`도 같이 부팅됩니다(20초쯤).
+2. **자리 이름과 ATTN 보기** — `operator-agent@kernel`은 커널 안 운영자 자리 이름입니다. 아래 표의 SESSION 칸에서 찾습니다.
+   ```bash
+   rig ps --nodes --rig kernel
+   ```
+3. **ATTN이 yes면 그 자리에 붙어서 풀기** — 이유가 `Harness launch requires attention`이면 사람의 손이 필요해 멈춘 것입니다.
+   ```bash
+   tmux attach -t operator-agent@kernel
+   ```
+   - Codex 로그인 화면이면 `Sign in with ChatGPT` → 브라우저에서 계정 선택.
+   - `Hooks need review`(훅 신뢰 확인)이면 내용을 확인해 믿기로 고른 뒤 `rig seat continue operator-agent@kernel`.
+   - Claude Code 자리(`advisor-lead@kernel`)가 로그인 전이면 같은 방법으로 붙어서 로그인.
+   - 빠져나오기: `Ctrl+b` 누른 뒤 `d`.
+4. **`Session 'operator-agent@kernel' not found`** — 컴퓨터를 다시 켰거나 tmux가 꺼져 커널 자리가 사라진 경우입니다.
+   ```bash
+   rig start                    # 데몬 · 커널 · 돌던 팀 한 번에 되살리기
+   rig up kernel --existing     # 커널만 다시 띄우기
+   ```
+
+다시 `rig ps --nodes --rig kernel`에서 operator-agent의 ATTN이 no면 프롬프트를 그대로 보내면 됩니다.
+
 ## 데이터
 
 `data/events.json`은 [서울 열린데이터광장 「서울시 문화행사 정보」](https://data.seoul.go.kr/dataList/OA-15486/S/1/datasetView.do)에서 2026-10-31에 받은 사본(11월 이후 끝나는 행사 293건)입니다. 공공누리 제1유형(출처 표시)으로 이용합니다. 출처: 서울특별시 서울문화포털.
